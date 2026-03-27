@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Négociation & Sales — Cours Master</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e29;
+    --border: #252a38;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-dim: rgba(201,168,76,0.15);
+    --accent: #4a7fa5;
+    --accent2: #c45a2a;
+    --text: #dce3f0;
+    --text-dim: #8a94b0;
+    --text-muted: #525c7a;
+    --highlight: #1e2535;
+    --red: #c44a4a;
+    --green: #4aaa7a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    left: 0; top: 0; bottom: 0;
+    width: 270px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 40px;
+    transition: transform 0.3s;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-logo .label {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .sidebar-logo h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--text);
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .nav-section {
+    padding: 20px 0 0;
+  }
+
+  .nav-section-title {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 0 24px 8px;
+  }
+
+  .nav-item {
+    display: block;
+    padding: 7px 24px;
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 12.5px;
+    font-weight: 400;
+    transition: all 0.2s;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+  }
+
+  .nav-item:hover, .nav-item.active {
+    color: var(--gold);
+    background: var(--gold-dim);
+    border-left-color: var(--gold);
+  }
+
+  .nav-item.sub {
+    padding-left: 36px;
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+
+  .nav-item.sub:hover { color: var(--gold); }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: 270px;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 80px 72px 60px;
+    background: linear-gradient(135deg, #0d0f14 0%, #111622 50%, #0f1419 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 1.08;
+    color: #fff;
+    margin-bottom: 12px;
+    max-width: 700px;
+  }
+
+  .hero h1 span { color: var(--gold); font-style: italic; }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 620px;
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat .num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .hero-stat .lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* ── CONTENT ── */
+  .content {
+    padding: 64px 72px;
+    max-width: 960px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 80px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding-top: 6px;
+    min-width: 36px;
+  }
+
+  .section-title-wrap h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .section-title-wrap .desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 21px;
+    font-weight: 700;
+    color: var(--text);
+    margin: 36px 0 14px;
+  }
+
+  h4 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 28px 0 12px;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  strong { color: var(--text); font-weight: 600; }
+
+  em { color: var(--gold-light); font-style: italic; }
+
+  /* ── CARDS ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 22px 20px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+  }
+
+  .card-tag {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .card h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+  }
+
+  .card p {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* ── TECHNIQUE BOX ── */
+  .technique {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 4px 4px 0;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+
+  .technique-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .technique h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 19px;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .tech-era {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--highlight);
+    padding: 3px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .tech-meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .tech-meta-item .k {
+    font-size: 10px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .tech-meta-item .v {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  /* ── STAT BLOCKS ── */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .stat-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px 16px;
+    text-align: center;
+  }
+
+  .stat-block .big {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    color: var(--gold);
+    display: block;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-block .lbl {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.4;
+  }
+
+  /* ── QUOTE ── */
+  .quote-block {
+    position: relative;
+    background: var(--surface2);
+    border-radius: 4px;
+    padding: 28px 32px;
+    margin: 28px 0;
+  }
+
+  .quote-block::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    color: var(--gold);
+    opacity: 0.25;
+    position: absolute;
+    top: -8px; left: 16px;
+    line-height: 1;
+  }
+
+  .quote-block blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .quote-block cite {
+    font-size: 12px;
+    color: var(--gold);
+    font-style: normal;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    margin: 24px 0;
+    padding-left: 20px;
+    border-left: 2px solid var(--border);
+  }
+
+  .tl-item {
+    position: relative;
+    padding: 0 0 30px 24px;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -6px; top: 5px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--bg);
+  }
+
+  .tl-year {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .tl-title {
+    font-weight: 600;
+    color: var(--text);
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .tl-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ── SECTOR CARDS ── */
+  .sector {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin: 24px 0;
+    overflow: hidden;
+  }
+
+  .sector-head {
+    padding: 20px 28px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .sector-icon {
+    width: 40px; height: 40px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .sector-head h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #fff;
+    margin: 0;
+  }
+
+  .sector-head .sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .sector-body {
+    padding: 24px 28px;
+  }
+
+  .kpi-row {
+    display: flex;
+    gap: 16px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+  }
+
+  .kpi {
+    background: var(--highlight);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .kpi .k { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+  .kpi .v { font-family: 'IBM Plex Mono', monospace; font-size: 16px; color: var(--gold); font-weight: 500; }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    background: var(--surface2);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-bottom: 1px solid rgba(37,42,56,0.6);
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--highlight); }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .badge-gold { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+  .badge-blue { background: rgba(74,127,165,0.15); color: var(--accent); border: 1px solid rgba(74,127,165,0.3); }
+  .badge-red { background: rgba(196,74,74,0.15); color: var(--red); border: 1px solid rgba(196,74,74,0.3); }
+  .badge-green { background: rgba(74,170,122,0.15); color: var(--green); border: 1px solid rgba(74,170,122,0.3); }
+
+  /* ── LIST ── */
+  ul.styled, ol.styled {
+    padding-left: 0;
+    list-style: none;
+    margin: 16px 0;
+  }
+
+  ul.styled li, ol.styled li {
+    padding: 7px 0 7px 20px;
+    position: relative;
+    color: var(--text-dim);
+    font-size: 14px;
+    border-bottom: 1px solid rgba(37,42,56,0.4);
+    line-height: 1.6;
+  }
+
+  ul.styled li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  ol.styled { counter-reset: item; }
+  ol.styled li::before {
+    counter-increment: item;
+    content: counter(item);
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    top: 10px;
+  }
+
+  ul.styled li:last-child, ol.styled li:last-child { border-bottom: none; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    padding: 18px 22px;
+    border-radius: 4px;
+    margin: 20px 0;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .callout.info { background: rgba(74,127,165,0.12); border-left: 3px solid var(--accent); }
+  .callout.warning { background: rgba(196,90,42,0.12); border-left: 3px solid var(--accent2); }
+  .callout.insight { background: rgba(201,168,76,0.1); border-left: 3px solid var(--gold); }
+
+  .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-body { font-size: 13.5px; color: var(--text-dim); line-height: 1.65; }
+  .callout-body strong { color: var(--text); }
+
+  /* ── FORMULA ── */
+  .formula {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+  }
+
+  .formula .label {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  /* ── TRAINING BOX ── */
+  .training-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .training-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+
+  .training-card .tc-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--border);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  .training-card h5 {
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .training-card p {
+    font-size: 12.5px;
+    margin: 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    padding: 40px 72px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+  }
+
+  .footer-text {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  @media (max-width: 900px) {
+    #sidebar { transform: translateX(-100%); }
+    #main { margin-left: 0; }
+    .hero, .content { padding-left: 24px; padding-right: 24px; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="label">Cours Master</div>
+    <h2>Négociation<br>&amp; Sales</h2>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Fondements</div>
+    <a href="#sens" class="nav-item">I. Le sens de la négociation</a>
+    <a href="#histoire" class="nav-item">II. Histoire &amp; évolution</a>
+    <a href="#techniques" class="nav-item">III. Les grandes techniques</a>
+    <a href="#techniques" class="nav-item sub">— Harvard / BATNA</a>
+    <a href="#techniques" class="nav-item sub">— SPIN Selling</a>
+    <a href="#techniques" class="nav-item sub">— ZOPA / Zone d'accord</a>
+    <a href="#techniques" class="nav-item sub">— Méthode Cialdini</a>
+    <a href="#techniques" class="nav-item sub">— Ancrage &amp; framing</a>
+    <a href="#techniques" class="nav-item sub">— MAAN &amp; variantes</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Pratique</div>
+    <a href="#training" class="nav-item">IV. Entraînement &amp; simulation</a>
+    <a href="#geopolitique" class="nav-item">V. Géopolitique &amp; Sciences Po</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Secteurs</div>
+    <a href="#banque" class="nav-item">VI. Banque</a>
+    <a href="#finance" class="nav-item">VII. Finance de marché</a>
+    <a href="#corporate" class="nav-item">VIII. Finance d'entreprise</a>
+    <a href="#conseil" class="nav-item">IX. Conseil</a>
+    <a href="#industrie" class="nav-item">X. Industrie</a>
+    <a href="#energie" class="nav-item">XI. Énergie</a>
+    <a href="#defense" class="nav-item">XII. Défense</a>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Synthèse</div>
+    <a href="#synthese" class="nav-item">XIII. Tableau de bord quantitatif</a>
+    <a href="#biblio" class="nav-item">XIV. Bibliographie</a>
+  </div>
+</nav>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div id="main">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">✦ Niveau Master — Parcours Avancé</div>
+    <h1>Négociation<br>&amp; <span>Sales</span></h1>
+    <p class="hero-sub">De la théorie des jeux à la salle des marchés — maîtriser l'art de la négociation dans les environnements à hauts enjeux, des années 1920 à l'ère post-Covid.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">7</div><div class="lbl">Secteurs analysés</div></div>
+      <div class="hero-stat"><div class="num">12+</div><div class="lbl">Techniques majeures</div></div>
+      <div class="hero-stat"><div class="num">100 ans</div><div class="lbl">D'histoire couverts</div></div>
+      <div class="hero-stat"><div class="num">40+</div><div class="lbl">Indicateurs chiffrés</div></div>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- ══ SECTION I ══ -->
+    <section class="section" id="sens">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <div class="section-title-wrap">
+          <h2>Le sens de la négociation</h2>
+          <p class="desc">Définir, positionner et philosophiser avant d'agir</p>
+        </div>
+      </div>
+
+      <p><strong>Négocier</strong>, du latin <em>negotiari</em> (faire du commerce, s'occuper d'affaires), désigne une activité humaine fondamentale : la tentative de faire converger des intérêts divergents vers un accord mutuellement acceptable. Cette définition minimale est universelle ; ses déclinaisons professionnelles sont infinies.</p>
+
+      <div class="quote-block">
+        <blockquote>La négociation n'est pas une joute verbale. C'est un processus de résolution conjointe de problèmes dans lequel deux parties ou plus tentent d'atteindre un résultat meilleur que celui qu'elles pourraient obtenir sans accord.</blockquote>
+        <cite>Roger Fisher &amp; William Ury — Getting to Yes (1981)</cite>
+      </div>
+
+      <h3>1.1 — Négociation vs. Persuasion vs. Vente</h3>
+      <p>Ces trois pratiques se recoupent mais ne se confondent pas :</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Dimension</th><th>Persuasion</th><th>Vente</th><th>Négociation</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Sens de l'influence</td><td>Unilatéral (A → B)</td><td>Unilatéral orienté</td><td>Bilatéral / multilatéral</td></tr>
+            <tr><td>Objectif</td><td>Changer une croyance</td><td>Conclure une transaction</td><td>Trouver un accord durable</td></tr>
+            <tr><td>Durée</td><td>Court terme</td><td>Court-moyen terme</td><td>Variable — souvent long</td></tr>
+            <tr><td>Paradigme dominant</td><td>Rhétorique (Aristote)</td><td>Marketing / SPIN</td><td>Théorie des jeux / IBN</td></tr>
+            <tr><td>Critère de succès</td><td>Adoption d'idée</td><td>Chiffre d'affaires</td><td>Pareto-optimalité</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>1.2 — La dualité fondamentale : Distributif vs. Intégratif</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-tag">Modèle Distributif</div>
+          <h5>Jeu à somme nulle</h5>
+          <p>Ce que l'un gagne, l'autre le perd. Typique des marchés spot, enchères, bazars. Stratégie : maximiser sa part de gâteau. Limite : détruit la relation et laisse de la valeur sur la table.</p>
+        </div>
+        <div class="card">
+          <div class="card-tag">Modèle Intégratif</div>
+          <h5>Création de valeur</h5>
+          <p>On explore les intérêts sous-jacents pour trouver des combinaisons qui agrandissent le gâteau total. Typique des partenariats longs, contrats complexes, M&A. Paradigme Harvard.</p>
+        </div>
+        <div class="card">
+          <div class="card-tag">Modèle Hybride</div>
+          <h5>Séquence "grow then claim"</h5>
+          <p>Phase intégrative (création commune de valeur), puis phase distributive (répartition). La maîtrise du pivot entre les deux phases est une compétence avancée.</p>
+        </div>
+      </div>
+
+      <h3>1.3 — Approches ontologiques : les trois écoles</h3>
+      <div class="stat-row">
+        <div class="stat-block"><span class="big">École A</span><div class="lbl">Rationaliste<br>(Théorie des jeux, Nash)</div></div>
+        <div class="stat-block"><span class="big">École B</span><div class="lbl">Behavioriste<br>(Kahneman, Thaler)</div></div>
+        <div class="stat-block"><span class="big">École C</span><div class="lbl">Relationnelle<br>(Goffman, Schelling)</div></div>
+      </div>
+
+      <p>L'école <strong>rationaliste</strong> pose la négociation comme un calcul d'utilité esperée. L'école <strong>behavioriste</strong> montre que les biais cognitifs (loss aversion, ancrage, effet de halo) dominent en pratique. L'école <strong>relationnelle</strong> insiste sur le contexte culturel, la face, la confiance et le signal. Un négociateur expert intègre les trois dimensions.</p>
+
+      <div class="callout info">
+        <div class="callout-icon">📊</div>
+        <div class="callout-body"><strong>Donnée quantitative :</strong> Une étude McKinsey (2020) sur 2 500 deals B2B montre que les entreprises ayant une méthodologie de négociation structurée améliorent leur marge brute de <strong>+7 à +12 points de pourcentage</strong> vs les négociateurs ad hoc. L'enjeu est massif à l'échelle d'un grand compte.</div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION II ══ -->
+    <section class="section" id="histoire">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <div class="section-title-wrap">
+          <h2>Histoire &amp; Évolution</h2>
+          <p class="desc">Un siècle de codification de l'art de négocier</p>
+        </div>
+      </div>
+
+      <p>La négociation existe depuis que l'homme fait du commerce, mais sa <strong>formalisation académique et professionnelle</strong> est un phénomène du 20e siècle, profondément lié à la mondialisation, à la montée des syndicats, puis à la sophistication des marchés financiers.</p>
+
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">ANNÉES 1920–1940</div>
+          <div class="tl-title">L'ère des négociateurs syndicaux</div>
+          <div class="tl-desc">Les conflits sociaux post-WWI imposent des négociations collectives formalisées. Aux USA, le National Labor Relations Act (1935) oblige les entreprises à négocier de bonne foi. Naissance des premières techniques de pression et de concession tactique. Chester Barnard dans <em>The Functions of the Executive</em> (1938) analyse la décision coopérative en entreprise.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1944–1960</div>
+          <div class="tl-title">La théorie des jeux entre dans la négociation</div>
+          <div class="tl-desc">Von Neumann &amp; Morgenstern (<em>Theory of Games and Economic Behavior</em>, 1944) offrent le premier cadre mathématique. John Nash formalise l'équilibre de Nash (1950) et la solution de négociation (1953). Ces outils migrent vers la diplomatie de Guerre froide et la stratégie d'entreprise. C'est aussi l'ère des <em>War Games</em> nucléaires (RAND Corporation).</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1962–1978</div>
+          <div class="tl-title">Schelling et la diplomatie coercitive</div>
+          <div class="tl-desc">Thomas Schelling (<em>The Strategy of Conflict</em>, 1960 ; <em>Arms and Influence</em>, 1966) fonde la théorie du signal, de la crédibilité et de l'engagement. Son analyse de la dissuasion nucléaire irrigue toute la négociation commerciale à enjeux élevés (BATNA, menace crédible, brûler les ponts). Prix Nobel d'économie 2005.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1979–1984</div>
+          <div class="tl-title">La Révolution Harvard</div>
+          <div class="tl-desc">Roger Fisher, William Ury et Bruce Patton fondent le Harvard Negotiation Project. Publication de <em>Getting to Yes</em> (1981) — 10 millions d'exemplaires vendus. Introduction des concepts : positions vs. intérêts, BATNA, options à bénéfice mutuel, critères objectifs. C'est la fondation de la négociation raisonnée moderne.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1985–1995</div>
+          <div class="tl-title">SPIN Selling &amp; la vente consultative</div>
+          <div class="tl-desc">Neil Rackham publie <em>SPIN Selling</em> (1988), issu de 12 ans et 35 000 appels commerciaux analysés chez Xerox et IBM. La vente complexe B2B se structure autour des questions Situation, Problème, Implication, Need-Payoff. Parallèlement, Miller-Heiman introduit le <em>Strategic Selling</em>. Ces méthodologies transforment les grandes forces de vente mondiales.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1995–2008</div>
+          <div class="tl-title">L'économie comportementale s'impose</div>
+          <div class="tl-desc">Kahneman &amp; Tversky (<em>Prospect Theory</em>) redessinent la prise de décision. Les biais cognitifs deviennent des leviers conscients : ancrage, aversion à la perte, effet de cadrage. Thaler codifie le <em>nudge</em> (2008). Cialdini (<em>Influence</em>, 1984 ; <em>Pre-Suasion</em>, 2016) vulgarise 6 puis 7 principes d'influence. L'enseignement en école de commerce intègre ces dimensions.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2008–2016</div>
+          <div class="tl-title">La crise financière, l'ère des négociations à la limite</div>
+          <div class="tl-desc">Les restructurations de dettes souveraines (Grèce 2012), les sauvetages bancaires (AIG, Lehman), les M&A post-crise placent la négociation au cœur de la survie institutionnelle. Le FBI's Chris Voss publie <em>Never Split the Difference</em> (2016), importation des techniques de négociation de prise d'otages dans le business : écoute tactique, miroir, étiquetage émotionnel.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">2017–AUJOURD'HUI</div>
+          <div class="tl-title">Digitalisation, IA et négociation algorithmique</div>
+          <div class="tl-desc">L'émergence de l'IA dans les achats (procurement automation), les plateformes de négociation (Coupa, SAP Ariba), les algorithmes de pricing dynamique (Amazon, hôtels, energie spot) reconfigurent la négociation. Les <em>AI negotiators</em> (Pactum AI) capables de négocier des milliers de contrats fournisseurs automatiquement. Simultanément, la négociation humaine à haute valeur (M&A, défense, energie) reste irremplaçable.</div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-block"><span class="big">10M</span><div class="lbl">Exemplaires de<br>Getting to Yes vendus</div></div>
+        <div class="stat-block"><span class="big">35 000</span><div class="lbl">Appels analysés pour<br>créer SPIN Selling</div></div>
+        <div class="stat-block"><span class="big">1944</span><div class="lbl">Première formalisation<br>mathématique (Von Neumann)</div></div>
+        <div class="stat-block"><span class="big">2005</span><div class="lbl">Nobel d'économie<br>pour Schelling</div></div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION III ══ -->
+    <section class="section" id="techniques">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <div class="section-title-wrap">
+          <h2>Les grandes techniques</h2>
+          <p class="desc">Décryptage des méthodes qui ont fait leurs preuves</p>
+        </div>
+      </div>
+
+      <!-- HARVARD / IBN -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>Méthode Harvard — Négociation Raisonnée (IBN)</h5>
+          <span class="tech-era">1981 — Fisher, Ury, Patton</span>
+        </div>
+        <p>La méthode Harvard repose sur 4 principes fondateurs qui constituent le paradigme dominant de la négociation professionnelle mondiale :</p>
+        <ol class="styled">
+          <li><strong>Séparer les personnes du problème</strong> — Être dur sur les intérêts, doux sur les personnes. Ne pas personnaliser l'antagonisme.</li>
+          <li><strong>Se concentrer sur les intérêts, pas sur les positions</strong> — Derrière chaque position se cache un ou plusieurs intérêts sous-jacents. L'espace de négociation s'ouvre en explorant les intérêts.</li>
+          <li><strong>Inventer des options à bénéfice mutuel (Pareto-improvements)</strong> — Brainstorming sans jugement, puis évaluation.</li>
+          <li><strong>Insister sur des critères objectifs</strong> — Prix de marché, expertise tierce, précédents, standards sectoriels.</li>
+        </ol>
+        <div class="callout insight">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body"><strong>BATNA (Best Alternative to a Negotiated Agreement) :</strong> Le concept central d'Harvard. Votre BATNA est votre protection contre un mauvais accord ET votre source de pouvoir. Règle : jamais accepter un accord en deçà de votre BATNA. Améliorer son BATNA avant de négocier est une stratégie de préparation fondamentale. Connaître le BATNA adverse est un avantage informationnel décisif.</div>
+        </div>
+        <div class="tech-meta">
+          <div class="tech-meta-item"><div class="k">Efficacité mesurée</div><div class="v">+18% valeur accord</div></div>
+          <div class="tech-meta-item"><div class="k">Profil idéal</div><div class="v">Négociations complexes, multi-parties</div></div>
+          <div class="tech-meta-item"><div class="k">Limite principale</div><div class="v">Suppose bonne foi adverse</div></div>
+        </div>
+      </div>
+
+      <!-- ZOPA -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>ZOPA — Zone of Possible Agreement</h5>
+          <span class="tech-era">Théorie des jeux appliquée</span>
+        </div>
+        <p>La ZOPA est l'espace entre le prix de réserve du vendeur (minimum acceptable) et le prix de réserve de l'acheteur (maximum acceptable). Si la ZOPA est positive, un accord est théoriquement possible. Si elle est négative, il ne l'est pas — sauf si l'on introduit des variables supplémentaires.</p>
+        <div class="formula">
+          <span class="label">ZOPA = [Prix réserve vendeur ; Prix réserve acheteur]</span>
+          Zone d'accord ≠ ∅ ⟺ Rés_vendeur ≤ Rés_acheteur
+        </div>
+        <p>La <strong>stratégie d'ancrage</strong> (première offre) est directement liée à la ZOPA : ancrer haut (vendeur) ou bas (acheteur) déplace le point focal à l'intérieur de la zone. Des études (Galinsky &amp; Mussweiler, 2001) montrent que la première offre explique <strong>entre 40% et 60%</strong> de la variance du résultat final dans une négociation distributive.</p>
+        <div class="tech-meta">
+          <div class="tech-meta-item"><div class="k">Puissance de l'ancre</div><div class="v">40–60% variance résultat</div></div>
+          <div class="tech-meta-item"><div class="k">Contre-ancrage efficace</div><div class="v">Nommer + ignorer, re-ancrer</div></div>
+        </div>
+      </div>
+
+      <!-- SPIN SELLING -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>SPIN Selling</h5>
+          <span class="tech-era">1988 — Neil Rackham / Huthwaite</span>
+        </div>
+        <p>SPIN est une méthodologie de <strong>vente consultative</strong> conçue pour les grandes ventes complexes (enterprise B2B). Elle repose sur une séquence de questions structurées :</p>
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-tag">S — Situation</div>
+            <h5>Questions de contexte</h5>
+            <p>"Quel est votre dispositif actuel ?" Objectif : cartographier la situation sans ennuyer. Limiter à 3–4 questions.</p>
+          </div>
+          <div class="card">
+            <div class="card-tag">P — Problème</div>
+            <h5>Questions de difficultés</h5>
+            <p>"Quelles difficultés rencontrez-vous ?" Activer la conscience d'un problème latent. Étape critique souvent négligée.</p>
+          </div>
+          <div class="card">
+            <div class="card-tag">I — Implication</div>
+            <h5>Questions d'impact</h5>
+            <p>"Que se passe-t-il si le problème persiste ?" Amplifier la douleur, quantifier les conséquences. Crée l'urgence psychologique.</p>
+          </div>
+          <div class="card">
+            <div class="card-tag">N — Need-Payoff</div>
+            <h5>Questions de bénéfice</h5>
+            <p>"Quelle valeur aurait une solution ?" Faire articuler la valeur par le client lui-même. Le closing devient naturel.</p>
+          </div>
+        </div>
+        <div class="tech-meta">
+          <div class="tech-meta-item"><div class="k">Efficacité deals >50K€</div><div class="v">+27% taux de closing</div></div>
+          <div class="tech-meta-item"><div class="k">Base empirique</div><div class="v">35 000 interactions analysées</div></div>
+          <div class="tech-meta-item"><div class="k">Temps de maîtrise</div><div class="v">6–12 mois de pratique active</div></div>
+        </div>
+      </div>
+
+      <!-- CIALDINI -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>Les 7 Principes d'Influence — Cialdini</h5>
+          <span class="tech-era">1984 / 2016 — Robert Cialdini</span>
+        </div>
+        <p>Robert Cialdini a identifié 7 leviers psychologiques universels qui déclenchent le comportement d'acceptation. Ces principes sont des déclencheurs automatiques issus de l'évolution cognitive humaine :</p>
+        <ul class="styled">
+          <li><strong>Réciprocité</strong> — Donner d'abord (concession, information, cadeau symbolique) génère une obligation de retour. Efficacité mesurée : +42% d'acquiescement après un petit cadeau (étude hôpital Regan, 1971).</li>
+          <li><strong>Engagement &amp; Cohérence</strong> — Un engagement public, même petit, engage à des concessions futures alignées. Technique du "pied dans la porte".</li>
+          <li><strong>Preuve sociale</strong> — "Nos 200 clients dans votre secteur ont choisi..." Puissant dans les situations d'incertitude.</li>
+          <li><strong>Autorité</strong> — Légitimité perçue (titre, expertise, tiers de référence). Indispensable dans la vente de conseil.</li>
+          <li><strong>Sympathie (Liking)</strong> — Nous acceptons plus facilement de ceux qui nous ressemblent ou nous apprécient.</li>
+          <li><strong>Rareté</strong> — "Cette fenêtre se ferme vendredi." Aversion à la perte (Kahneman) amplifiée par la rareté temporelle ou quantitative.</li>
+          <li><strong>Unité (Unity)</strong> — Ajouté en 2016 : partage d'identité collective (famille, tribu, équipe). Levier profond de confiance.</li>
+        </ul>
+        <div class="callout warning">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body"><strong>Éthique &amp; risque :</strong> Ces principes peuvent être utilisés de manière manipulatoire. Cialdini lui-même insiste sur leur usage éthique (alignment vs. manipulation). Dans les secteurs régulés (banque, assurance), leur usage abusif expose à des risques légaux importants (MiFID II, DDA en Europe).</div>
+        </div>
+      </div>
+
+      <!-- CHRIS VOSS -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>Négociation Tactique — Méthode Voss</h5>
+          <span class="tech-era">2016 — Chris Voss / FBI</span>
+        </div>
+        <p>Issue de la négociation de prises d'otages, la méthode Voss repose sur <strong>l'intelligence émotionnelle tactique</strong> plutôt que sur la rationalité froide. Elle est particulièrement efficace dans les situations à haute tension, les impasses, et les négociations adversariales.</p>
+        <ul class="styled">
+          <li><strong>Écoute active calibrée</strong> — Répéter les 2–3 derniers mots (technique du "miroir"). Provoque l'élaboration et révèle les intérêts cachés.</li>
+          <li><strong>Étiquetage émotionnel</strong> — "Il semble que vous ayez des préoccupations sur le calendrier..." Nomme l'émotion adverse sans la valider ou l'invalider.</li>
+          <li><strong>Accusation d'audit</strong> — Anticiper et énoncer les objections adverses avant qu'elles soient formulées ("Vous allez peut-être penser que je suis déraisonnable..."). Désarme la résistance.</li>
+          <li><strong>Questions calibrées (ouvertes)</strong> — "Comment puis-je faire cela ?" plutôt que "Pouvez-vous...?" Transfère la résolution du problème.</li>
+          <li><strong>Le "Non" comme départ</strong> — Voss réhabilite le "non" : il sécurise l'interlocuteur et ouvre la vraie conversation.</li>
+        </ul>
+        <div class="tech-meta">
+          <div class="tech-meta-item"><div class="k">Domaine d'excellence</div><div class="v">Impasses, deals adversariaux</div></div>
+          <div class="tech-meta-item"><div class="k">Adoption corporate</div><div class="v">JPMorgan, Google, McKinsey</div></div>
+        </div>
+      </div>
+
+      <!-- MAAN / WATNA -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>MAAN / WATNA / ZOPA — Écosystème de préparation</h5>
+          <span class="tech-era">Extensions du cadre Harvard</span>
+        </div>
+        <p>Au-delà du BATNA, le négociateur professionnel prépare un écosystème d'alternatives :</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Concept</th><th>Définition</th><th>Usage stratégique</th></tr></thead>
+            <tbody>
+              <tr><td><strong>BATNA</strong></td><td>Best Alternative to a Negotiated Agreement</td><td>Point de résistance, source de pouvoir</td></tr>
+              <tr><td><strong>WATNA</strong></td><td>Worst Alternative to a Negotiated Agreement</td><td>Plancher psychologique, gestion du risque</td></tr>
+              <tr><td><strong>MAAN</strong></td><td>Meilleure Alternative à un Accord Négocié</td><td>Version française du BATNA</td></tr>
+              <tr><td><strong>ZOPA</strong></td><td>Zone of Possible Agreement</td><td>Cartographie de l'espace de négociation</td></tr>
+              <tr><td><strong>RP</strong></td><td>Reservation Price / Prix de réserve</td><td>Limite absolute de l'accord acceptable</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- MÉTHODE DES CONCESSIONS -->
+      <div class="technique">
+        <div class="technique-header">
+          <h5>Stratégie des Concessions — Psychologie du pattern</h5>
+          <span class="tech-era">Recherche comportementale — Pruitt, Raiffa</span>
+        </div>
+        <p>La gestion des concessions est un levier différenciateur majeur. La recherche de Pruitt (1981) et Raiffa (1982) identifie plusieurs patterns :</p>
+        <ul class="styled">
+          <li><strong>Décroissance des concessions</strong> — Chaque concession successive doit être plus petite que la précédente (ex: -10, -5, -2, -1). Signal : on approche du fond. Effet psychologique : l'adversaire croit avoir tout extrait.</li>
+          <li><strong>Concession conditionnelle</strong> — "Je peux bouger sur X, si vous bougez sur Y." Jamais unilatéral dans une négociation commerciale complexe.</li>
+          <li><strong>La technique du "good cop / bad cop"</strong> — Un membre de l'équipe joue le rôle du contraignant ("mon directeur ne me laissera jamais..."), l'autre le médiateur. Très utilisé dans les achats de grands comptes.</li>
+          <li><strong>Ancrage initial extrême</strong> — Première offre volontairement agressive pour calibrer le centre de gravité. Doit rester crédible (moins de 30% au-delà de l'objectif réel).</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION IV ══ -->
+    <section class="section" id="training">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <div class="section-title-wrap">
+          <h2>Entraînement &amp; Simulation</h2>
+          <p class="desc">Comment développer une compétence haute-performance en négociation</p>
+        </div>
+      </div>
+
+      <p>La négociation est une compétence <strong>procedurale</strong> (comme jouer d'un instrument) et non déclarative (comme connaître une règle). Le savoir ne suffit pas : la pratique délibérée est irremplaçable. Anders Ericsson a démontré que l'expertise nécessite <strong>10 000 heures de pratique délibérée</strong> — soit environ 10 ans à raison de 3h/jour.</p>
+
+      <div class="training-grid">
+        <div class="training-card">
+          <div class="tc-num">01</div>
+          <h5>Jeux de rôle structurés (JDR)</h5>
+          <p>Simulation de cas réels avec retour vidéo et débriefing structuré. Standard dans tous les grands programmes MBA. Efficacité maximisée par : alternance des rôles, observateur extérieur, grille d'évaluation comportementale.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">02</div>
+          <h5>Harvard PON Simulations</h5>
+          <p>Le Program on Negotiation d'Harvard distribue 150+ exercices validés académiquement (Harbour Lights, Sally Soprano, Harborco). Ces simulations sont utilisées dans 1 500+ universités mondiales. Permettent une mesure quantitative des gains vs optimum théorique.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">03</div>
+          <h5>Coaching individuel + analyse des deals</h5>
+          <p>Revue systématique des deals perdus et gagnés avec un coach certifié. "Deal autopsy" : reconstituer le film d'une négociation. Pratique répandue dans les équipes de vente enterprise (Salesforce, SAP, Oracle) : +15% win rate après 6 mois.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">04</div>
+          <h5>Négociations de la vie quotidienne</h5>
+          <p>Négocier au marché, avec son opérateur télécom, dans un bazar au Maroc. Pratique recommandée par Voss lui-même. Développe la tolérance à la tension, le silence, et le "non". Accessible dès aujourd'hui.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">05</div>
+          <h5>Shadowing &amp; Co-négociation</h5>
+          <p>Accompagner un senior sur des négociations réelles sans parler. Puis co-négocier avec debriefing. Standard dans les cabinets de conseil (McKinsey, BCG : le stagiaire observe avant de pitcher). Apprentissage du non-verbal, du silence, du rythme.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">06</div>
+          <h5>AI Roleplay &amp; Outils digitaux</h5>
+          <p>Nouveauté : simulateurs IA (Second Nature, Roleplay.ai, Pitch Perfect) qui jouent l'adversaire avec des personnalités paramétrées. Avantage : disponible 24/7, sans enjeu social. Limite : manque la pression émotionnelle réelle. Complément, pas substitut.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">07</div>
+          <h5>Compétitions de négociation</h5>
+          <p>Championnats universitaires (HNMUN, Competitive Negotiation), compétitions d'entreprise. Format : 4 heures, cas inconnu, feedback jury expert. Pression de performance et exposition à des styles adverses. HEC, ESSEC, Sciences Po organisent leurs propres tournois.</p>
+        </div>
+        <div class="training-card">
+          <div class="tc-num">08</div>
+          <h5>Journal de négociation</h5>
+          <p>Tenir un journal structuré : objectif initial, BATNA, résultat, écart, analyse. Méta-cognition post-négociation. Méthode recommandée par Deepak Malhotra (Harvard): sur 3 mois, identification des patterns personnels bloquants.</p>
+        </div>
+      </div>
+
+      <h3>4.1 — Framework de développement par niveau</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Niveau</th><th>Profil</th><th>Objectif principal</th><th>Méthodes prioritaires</th><th>KPI de progression</th></tr></thead>
+          <tbody>
+            <tr><td><span class="badge badge-green">Novice</span></td><td>0–2 ans</td><td>Acquérir le cadre Harvard + SPIN</td><td>JDR + Harvard PON simulations</td><td>Savoir identifier BATNA/ZOPA</td></tr>
+            <tr><td><span class="badge badge-blue">Intermédiaire</span></td><td>2–5 ans</td><td>Maîtriser les biais comportementaux</td><td>Shadowing + deals autopsy + JDR avancé</td><td>+10% valeur accord vs baseline</td></tr>
+            <tr><td><span class="badge badge-gold">Expert</span></td><td>5–10 ans</td><td>Gérer la multi-partie, les crises</td><td>Coaching 1:1 + compétitions + enseignement</td><td>Win rate >65%, deal size +20%</td></tr>
+            <tr><td><span class="badge badge-red">Master</span></td><td>10+ ans</td><td>Concevoir des architectures de deal</td><td>Mandats complexes + contributions académiques</td><td>Deals transformateurs, closing >90%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout info">
+        <div class="callout-icon">📈</div>
+        <div class="callout-body"><strong>ROI de la formation :</strong> Une étude de l'ATD (Association for Talent Development, 2022) sur 500 équipes commerciales B2B montre qu'un programme de formation à la négociation de 40h génère en moyenne un ROI de <strong>7:1</strong> sur 18 mois (amélioration des marges, réduction des délais de closing, hausse du panier moyen).</div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION V ══ -->
+    <section class="section" id="geopolitique">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <div class="section-title-wrap">
+          <h2>Géopolitique &amp; Sciences Politiques</h2>
+          <p class="desc">Ce que la diplomatie apprend au négociateur d'entreprise</p>
+        </div>
+      </div>
+
+      <p>Les négociations diplomatiques de haut niveau constituent un laboratoire exceptionnel où les enjeux sont maximaux (guerre, paix, traités commerciaux) et les tactiques les plus sophistiquées. L'ère post-1945 offre une riche bibliothèque de cas.</p>
+
+      <h3>5.1 — Schelling et la crédibilité de la menace</h3>
+      <p>Thomas Schelling a posé le problème fondamental de toute négociation à enjeux élevés : <strong>une menace n'est utile que si elle est crédible</strong>. Or, exécuter une menace est souvent coûteux pour celui qui la profère (frapper un fournisseur clé, rompre une relation longue, lancer un contentieux). D'où la nécessité de créer des <em>mécanismes d'engagement irréversibles</em> (burning bridges) qui lient les mains du négociateur à son propre avantage.</p>
+
+      <div class="quote-block">
+        <blockquote>The power to hurt is most powerful when held in reserve. It is the threat of pain that gets the most concessions, not the pain itself.</blockquote>
+        <cite>Thomas Schelling — Arms and Influence, 1966</cite>
+      </div>
+
+      <p><strong>Application entreprise :</strong> Un acheteur de grande distribution qui annonce publiquement un appel d'offres concurrent pendant la renégociation annuelle avec son fournisseur crée un engagement crédible. Un fonds d'investissement qui mandate Goldman Sachs avant de notifier une offre hostile rend sa menace tangible.</p>
+
+      <h3>5.2 — Kissinger et la diplomatie triangulaire</h3>
+      <p>Henry Kissinger a utilisé la triangulation Chine–URSS–USA dans les années 1970 pour maximaliser le pouvoir américain en exploitant les dissensions sino-soviétiques. Ce principe de <strong>coalition building</strong> s'applique directement en entreprise : dans toute négociation multi-parties (M&A avec plusieurs fonds, appel d'offres public), la capacité à modifier la structure des alliances est décisive.</p>
+
+      <div class="callout insight">
+        <div class="callout-icon">🌍</div>
+        <div class="callout-body"><strong>Le principe de Kissinger appliqué au business :</strong> Avant une négociation M&A complexe, un conseil avisé cartographie les intérêts de tous les stakeholders (fonds, management, syndicats, régulateurs) et identifie les triangulations possibles. Rallier un acteur-pivot peut modifier le rapport de force fondamental sans confrontation directe.</div>
+      </div>
+
+      <h3>5.3 — Nye et le Soft Power dans la vente</h3>
+      <p>Joseph Nye (<em>Bound to Lead</em>, 1990 ; <em>Soft Power</em>, 2004) distingue le <strong>hard power</strong> (coercition, sanction) du <strong>soft power</strong> (attraction, légitimité culturelle). En négociation commerciale, cela se traduit :</p>
+      <ul class="styled">
+        <li><strong>Hard power commercial</strong> : pouvoir de marché, dépendance fournisseur, clause pénale, BATNA fort.</li>
+        <li><strong>Soft power commercial</strong> : réputation de la marque, expertise reconnue, réseau de références, culture de partenariat.</li>
+        <li>Les entreprises les plus efficaces combinent les deux : Apple négocie ses composants avec un hard power de monopoleur et un soft power de marque premium.</li>
+      </ul>
+
+      <h3>5.4 — Putnam et la négociation à deux niveaux</h3>
+      <p>Robert Putnam (<em>Diplomacy and Domestic Politics</em>, 1988) a formalisé le modèle dit des <strong>"two-level games"</strong> : tout négociateur représente à la fois sa partie adverse ET sa propre circonscription interne (actionnaires, board, syndicat, équipe). La marge de manœuvre réelle est l'intersection des "win-sets" des deux niveaux.</p>
+
+      <p><strong>Application directe en entreprise :</strong> Un DAF qui négocie un crédit syndiqué doit gérer simultanément les banques prêteuses ET son conseil d'administration. Un vendeur de solution complexe doit convaincre à la fois son sponsor interne ET les acheteurs. Sous-estimer le niveau interne est l'une des causes principales d'échec des grandes négociations.</p>
+
+      <h3>5.5 — Brzezinski et la négociation avec les puissances autoritaires</h3>
+      <p>Zbigniew Brzezinski (<em>The Grand Chessboard</em>, 1997) analyse les dynamiques de négociation avec des régimes où la parole donnée n'a pas la même valeur institutionnelle. Ses enseignements :</p>
+      <ul class="styled">
+        <li>Mettre l'accord par écrit avec des clauses d'arbitrage tiers est plus efficace que faire confiance aux engagements verbaux.</li>
+        <li>La réciprocité différée (je vous donne X maintenant, vous me donnez Y dans 6 mois) est risquée sans garanties institutionnelles.</li>
+        <li>Négocier avec des États ou des entreprises semi-publiques (Chine, Golfe, Russie) requiert de comprendre les dynamiques de faction interne.</li>
+      </ul>
+
+      <div class="stat-row">
+        <div class="stat-block"><span class="big">73%</span><div class="lbl">Des deals cross-border échouent à cause de différences culturelles (KPMG, 2021)</div></div>
+        <div class="stat-block"><span class="big">2 niveaux</span><div class="lbl">Modèle Putnam : interne + externe simultanément</div></div>
+        <div class="stat-block"><span class="big">40%</span><div class="lbl">Des négociations diplomatiques ayant réussi utilisent un médiateur tiers</div></div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION VI – BANQUE ══ -->
+    <section class="section" id="banque">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <div class="section-title-wrap">
+          <h2>Secteur Bancaire</h2>
+          <p class="desc">Crédit, relation clientèle et gestion des flux</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">🏦</div>
+          <div>
+            <h3>Banque de détail &amp; Banque privée</h3>
+            <div class="sub">Retail, Private Banking, Gestion de patrimoine</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>La négociation bancaire opère dans un cadre fortement régulé (MiFID II, LCB-FT, Bâle III) qui contraint les marges de manœuvre mais ne supprime pas la négociation. Les points de négociation principaux sont : <strong>taux d'intérêt, frais de gestion, commissions, covenants, sûretés, délais</strong>.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">NIM moyen France</div><div class="v">~1,2%</div></div>
+            <div class="kpi"><div class="k">Fidélité client</div><div class="v">11 ans (moy)</div></div>
+            <div class="kpi"><div class="k">Marge négociable</div><div class="v">20–40 bps</div></div>
+            <div class="kpi"><div class="k">Taux de rétention après renégociation</div><div class="v">78%</div></div>
+          </div>
+
+          <h4>Techniques spécifiques</h4>
+          <ul class="styled">
+            <li><strong>Bundle pricing</strong> — Proposer un package de produits (crédit + assurance + épargne) avec un prix global attractif. La négociation porte sur la valeur perçue du bundle, pas sur chaque ligne.</li>
+            <li><strong>L'effet de lock-in</strong> — Les banques maximisent la complexité de sortie (frais de transfert, IRA, domiciliation salaire) pour réduire le BATNA du client. Un client conscient de son BATNA (comparateur, courtier) regagne du pouvoir.</li>
+            <li><strong>L'argument de l'historique</strong> — "Vous êtes client depuis 15 ans, vous méritez un traitement prioritaire." Activation du principe d'unité (Cialdini) et de la réciprocité.</li>
+            <li><strong>La fenêtre de taux directeur</strong> — Timing : négocier en période de montée des taux quand la banque cherche à fidéliser, ou juste après une hausse BCE pour obtenir un réajustement.</li>
+          </ul>
+
+          <h4>Cas : Renégociation d'un crédit immobilier</h4>
+          <p>Un client renégocie son prêt immobilier. BATNA : proposition concurrente à taux –40 bps (courtier Pretto). Stratégie : présenter la concurrence, ancrer sur –50 bps, accepter –35 bps + 0 frais de dossier. Valeur créée : sur 200k€ sur 20 ans, –35 bps = <strong>économie de ~7 000€</strong>. La préparation (BATNA réel) a multiplié par 3 la valeur obtenue vs une renégociation sans concurrence réelle.</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">🤝</div>
+          <div>
+            <h3>Banque d'Investissement (IBD)</h3>
+            <div class="sub">M&amp;A Advisory, ECM, DCM, LBO</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>Dans la banque d'investissement, la négociation porte simultanément sur <strong>la vente de la mission</strong> (convaincre le client de mandater la banque) et <strong>sur le deal lui-même</strong> (structuration, valorisation, documentation).</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Fee M&A (deal 500M€)</div><div class="v">~1–2%</div></div>
+            <div class="kpi"><div class="k">Durée négo M&A</div><div class="v">6–18 mois</div></div>
+            <div class="kpi"><div class="k">Parties prenantes moyennes</div><div class="v">12–25</div></div>
+          </div>
+
+          <h4>Dynamiques de négociation IBD</h4>
+          <ul class="styled">
+            <li><strong>Le pitch compétitif (bake-off)</strong> — Le client sélectionne sa banque conseil sur présentation. Négociation de mandats : différenciation par la thèse sectorielle, le track record, et la qualité du deal team. Les fees sont négociés à ce stade, et la pression concurrentielle entre banques est intense.</li>
+            <li><strong>La négociation de valeur (valorisation)</strong> — Dans un M&A, acheteur et vendeur partent de référentiels différents (DCF, comparables, LBO floor). La négociation de la valeur est une négociation sur les hypothèses des modèles. Maîtriser le modèle adverse est décisif.</li>
+            <li><strong>Les SPA (Sale &amp; Purchase Agreement)</strong> — La documentation finale est une négociation d'avocats sur 300–600 pages. Les clauses clés : reps &amp; warranties, MAC clauses, earn-out, escrow. Un earn-out mal négocié peut détruire 20–30% de la valeur de cession perçue.</li>
+          </ul>
+
+          <div class="callout insight">
+            <div class="callout-icon">💰</div>
+            <div class="callout-body"><strong>Donnée :</strong> Une étude McKinsey (2022) montre que les acquéreurs disposant d'une équipe M&A dédiée avec un process de négociation formel obtiennent des multiples d'acquisition <strong>8 à 15% inférieurs</strong> aux acquéreurs opportunistes sur des opérations comparables. Dans une transaction à 500M€, c'est 40–75M€ de différence.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION VII – FINANCE MARCHÉ ══ -->
+    <section class="section" id="finance">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <div class="section-title-wrap">
+          <h2>Finance de Marché</h2>
+          <p class="desc">Trading, structuration, sales &amp; prime brokerage</div>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">📈</div>
+          <div>
+            <h3>Sales &amp; Trading — Marchés financiers</h3>
+            <div class="sub">Fixed Income, Equities, Dérivés, FX</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>La finance de marché est le théâtre d'une forme extrême de négociation : <strong>rapide, souvent verbale, à haute pression et avec des conséquences immédiates en P&amp;L</strong>. Le sale structure, propose et close des transactions souvent en moins de 5 minutes.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Spread FX EUR/USD</div><div class="v">0,1–0,5 pip</div></div>
+            <div class="kpi"><div class="k">Spread OAT 10Y</div><div class="v">~1–3 bps</div></div>
+            <div class="kpi"><div class="k">Marge produit structuré</div><div class="v">50–300 bps</div></div>
+            <div class="kpi"><div class="k">Rotation client actif</div><div class="v">3–5x/an</div></div>
+          </div>
+
+          <h4>Techniques de vente en finance de marché</h4>
+          <ul class="styled">
+            <li><strong>La proposition "Just in time"</strong> — Appeler le gérant exactement au bon moment du marché avec une idée précise et actionnable. L'information asymétrique est le principal levier de valeur. Le timing est une forme de négociation du contexte.</li>
+            <li><strong>L'exclusivité perçue</strong> — "Je vous appelle en premier sur cette opportunité avant de la proposer à 3 autres clients." Activation de la rareté (Cialdini) combinée à l'unité relationnelle.</li>
+            <li><strong>Le "cross-sell" structurel</strong> — Proposer une couverture de taux à un client qui vient d'émettre de la dette. La négociation du produit de couverture bénéficie du contexte de confiance de la transaction primaire.</li>
+            <li><strong>Gestion du spread en temps réel</strong> — Le sale négocie son spread interne avec le trader (pricing en "axes") et son spread externe avec le client. Double négociation simultanée : un art qui nécessite une connaissance parfaite des deux contreparties.</li>
+          </ul>
+
+          <h4>La négociation algorithmique : une nouvelle frontière</h4>
+          <p>L'essor de l'exécution algorithmique (algo trading, DMA, dark pools) réduit le rôle du sale humain sur les produits vanille liquides (actions CAC40, futures Bund). En revanche, pour les produits moins liquides (crédit, produits structurés, dérivés exotiques) et les gros blocs, la négociation humaine reste irremplaçable. <strong>82% des volumes institutionnels en actions européennes sont électroniques</strong>, mais seulement 30% du crédit corporate.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION VIII – CORPORATE FINANCE ══ -->
+    <section class="section" id="corporate">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <div class="section-title-wrap">
+          <h2>Finance d'Entreprise</h2>
+          <p class="desc">Financement, trésorerie, dette et capital</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">🏢</div>
+          <div>
+            <h3>Direction Financière — Trésorerie &amp; Financement</h3>
+            <div class="sub">CFO, Trésorier, Responsable financement</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>Le CFO et le trésorier sont des négociateurs professionnels de fait : <strong>dette bancaire, émissions obligataires, lignes de crédit, couvertures de change, crédit-bail, affacturage</strong> — chaque transaction est une négociation avec des enjeux financiers massifs.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Économie marge 10 bps</div><div class="v">100k€/an sur 100M€</div></div>
+            <div class="kpi"><div class="k">Nb banques panel moyen (CAC40)</div><div class="v">8–15</div></div>
+            <div class="kpi"><div class="k">Durée négo crédit syndiqué</div><div class="v">6–12 semaines</div></div>
+          </div>
+
+          <h4>Stratégie de panel bancaire</h4>
+          <p>Maintenir un panel de 8 à 12 banques crée une concurrence saine et un BATNA permanent. Les meilleures pratiques incluent : <strong>RFP annuel</strong> pour les lignes de crédit, rotation partielle du panel, et partage équitable des mandats de couverture selon les performances. Un panel bien géré économise <strong>15 à 25 bps</strong> sur le coût de la dette vs une relation unique.</p>
+
+          <h4>Négociation des covenants</h4>
+          <p>Les covenants financiers (levier, couverture d'intérêts, capex) sont négociés au moment de la mise en place du crédit — jamais après. Les leviers : <strong>headroom</strong> (marge par rapport aux seuils), <strong>equity cure</strong> (droit d'injection de capital), <strong>anti-cash trap</strong>. Un covenant mal négocié peut déclencher un événement de défaut technique lors d'une récession courte même si l'entreprise est solvable.</p>
+
+          <div class="callout warning">
+            <div class="callout-icon">⚠️</div>
+            <div class="callout-body"><strong>Erreur classique :</strong> Négocier les conditions financières (spread) sans se concentrer sur la documentation (covenants, events of default, MACs). La documentation est souvent plus impactante à long terme que le taux.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION IX – CONSEIL ══ -->
+    <section class="section" id="conseil">
+      <div class="section-header">
+        <div class="section-num">09</div>
+        <div class="section-title-wrap">
+          <h2>Conseil en Management</h2>
+          <p class="desc">Vendre une mission, valoriser son expertise</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">🎯</div>
+          <div>
+            <h3>Vente d'une mission de conseil</h3>
+            <div class="sub">Strategy, Operations, Digital, Risk</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>La vente d'une mission de conseil est <strong>la négociation la plus complexe qui soit</strong> : on vend une prestation intellectuelle intangible, à un prix premium, à des décideurs sophistiqués qui connaissent leur marché. Le processus de vente dure souvent 3 à 9 mois.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Win rate cabinet Tier 1</div><div class="v">25–40%</div></div>
+            <div class="kpi"><div class="k">Durée cycle vente</div><div class="v">3–9 mois</div></div>
+            <div class="kpi"><div class="k">Remise max accordée</div><div class="v">15–25%</div></div>
+            <div class="kpi"><div class="k">Rapport coût-valeur clé</div><div class="v">ROI >5:1 exigé</div></div>
+          </div>
+
+          <h4>La méthode "Insight Selling" (post-SPIN)</h4>
+          <p>Matthew Dixon et Brent Adamson (<em>The Challenger Sale</em>, 2011) ont analysé 6 000 commercial en B2B complexe. Leur découverte : les vendeurs les plus performants dans le conseil ne sont pas les "relation builders" mais les <strong>"Challengers"</strong> — ceux qui remettent en question les hypothèses du client, apportent une vision non sollicitée, et assument la friction intellectuelle.</p>
+          <ul class="styled">
+            <li><strong>Enseigner</strong> — Partager une insight unique que le client n'a pas. "Nos données montrent que 70% des entreprises de votre secteur ont un coût de transformation de la donnée supérieur de 40% à la médiane..."</li>
+            <li><strong>Personnaliser</strong> — Adapter l'insight aux KPIs et aux contraintes spécifiques du client. Pas de pitch générique.</li>
+            <li><strong>Prendre le contrôle</strong> — Guider la conversation vers la solution avec assertivité. Ne pas céder sur la valeur sous pression.</li>
+          </ul>
+
+          <h4>Négocier les honoraires</h4>
+          <p>Le prix en conseil est une construction de valeur perçue. Les techniques éprouvées :</p>
+          <ul class="styled">
+            <li><strong>Ancrage value-based</strong> — Avant de présenter les honoraires, quantifier la valeur attendue. "Si nous vous aidons à identifier 30M€ d'économies, un investissement de 1,5M€ représente un ROI de 20:1."</li>
+            <li><strong>Framing comparatif</strong> — Comparer le coût de la mission au coût de l'inaction ou du statu quo, pas au coût d'un consultant moins cher.</li>
+            <li><strong>Découplage des composantes</strong> — Plutôt que de baisser le prix global, réduire le scope (moins de livrables, équipe plus junior), préservant ainsi le taux journalier qui est le vrai indicateur de positionnement.</li>
+            <li><strong>Success fees</strong> — Proposer une part variable indexée sur les résultats. Signal de confiance fort dans sa propre capacité de delivery. Pratiqué par les cabinets de restructuration (ATD, Accuracy) et parfois par les Big 4 en transformation.</li>
+          </ul>
+
+          <div class="callout info">
+            <div class="callout-icon">📌</div>
+            <div class="callout-body"><strong>Référence terrain :</strong> Selon une enquête Source Global Research (2023), <strong>57% des clients</strong> de conseil déclarent que la capacité du cabinet à proposer une perspective originale et challengeante est le premier critère de sélection, devant le prix et le track record. L'insight selling est devenu le standard dans le Tier 1.</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION X – INDUSTRIE ══ -->
+    <section class="section" id="industrie">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <div class="section-title-wrap">
+          <h2>Industrie</h2>
+          <p class="desc">Achats stratégiques, supply chain &amp; grands comptes</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">⚙️</div>
+          <div>
+            <h3>Industrie manufacturière &amp; Achats</h3>
+            <div class="sub">Automobile, Aéronautique, Chimie, Biens d'équipement</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>L'industrie est le secteur où la négociation achat/vente est la plus codifiée et la plus systématique. Les achats représentent <strong>50 à 70% du chiffre d'affaires</strong> d'un industriel — une réduction de 1% du coût des achats équivaut à une augmentation de 5 à 10% du résultat opérationnel.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Part achats / CA industriel</div><div class="v">50–70%</div></div>
+            <div class="kpi"><div class="k">Économie / 1% achat</div><div class="v">×5–10 EBIT</div></div>
+            <div class="kpi"><div class="k">Durée contrat fournisseur clé</div><div class="v">3–7 ans</div></div>
+          </div>
+
+          <h4>Le modèle Kraljic (1983)</h4>
+          <p>Peter Kraljic (<em>HBR, 1983</em>) a créé la matrice stratégique des achats qui détermine la stratégie de négociation optimale pour chaque catégorie de fournisseur :</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Quadrant Kraljic</th><th>Profil</th><th>Stratégie achat</th><th>Approche négociation</th></tr></thead>
+              <tbody>
+                <tr><td><span class="badge badge-red">Stratégique</span></td><td>Risque élevé + valeur élevée</td><td>Partenariat long terme</td><td>Intégrative, co-développement</td></tr>
+                <tr><td><span class="badge badge-gold">Levier</span></td><td>Risque faible + valeur élevée</td><td>Compétition maximale</td><td>Distributive, appels d'offres durs</td></tr>
+                <tr><td><span class="badge badge-blue">Goulot d'étranglement</span></td><td>Risque élevé + valeur faible</td><td>Sécurisation supply</td><td>Relationnelle, éviter la rupture</td></tr>
+                <tr><td>Routinier</td><td>Risque faible + valeur faible</td><td>Automatisation, e-procurement</td><td>Standardisation, algorithmes</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4>Techniques achats avancées</h4>
+          <ul class="styled">
+            <li><strong>Open book costing</strong> — Exiger la transparence des coûts fournisseur (matière, MO, overhead, marge). Pratique dans l'automobile (PSA, Toyota). Repositionne la négociation sur la marge cible plutôt que le prix affiché.</li>
+            <li><strong>Cost breakdown analysis</strong> — Déconstruire le prix en composantes et négocier chacune séparément. Si la matière première (acier, cuivre) a baissé de 15%, la clause d'indexation doit être activée.</li>
+            <li><strong>Competitive benchmarking</strong> — Inviter 3–5 fournisseurs au RFQ (Request for Quotation), même si le choix est quasi-arrêté, pour créer pression et information.</li>
+            <li><strong>La négociation en équipe</strong> — Acheteur (focus prix/conditions), ingénieur (focus technique), juriste (focus contrat). Chaque rôle a une information asymétrique que l'autre partie ne peut pas facilement contester.</li>
+          </ul>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION XI – ÉNERGIE ══ -->
+    <section class="section" id="energie">
+      <div class="section-header">
+        <div class="section-num">11</div>
+        <div class="section-title-wrap">
+          <h2>Secteur Énergie</h2>
+          <p class="desc">Contrats long terme, spot, PPAs et géopolitique</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">⚡</div>
+          <div>
+            <h3>Négoce d'énergie &amp; Contrats long terme</h3>
+            <div class="sub">Électricité, Gaz, Pétrole, Renouvelables, CO2</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>L'énergie est un secteur de négociation de classe mondiale : les enjeux sont géopolitiques, les volumes colossaux, les cycles longs, et la volatilité des prix extrême. La combinaison de contrats physiques, financiers, réglementaires et climatiques crée une complexité unique.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Volatilité TTF gaz 2022</div><div class="v">+800%</div></div>
+            <div class="kpi"><div class="k">Durée PPA solaire</div><div class="v">10–25 ans</div></div>
+            <div class="kpi"><div class="k">Taille contrat GNL (long terme)</div><div class="v">$5–50Mrd</div></div>
+            <div class="kpi"><div class="k">Part contracts spot vs LT (UE)</div><div class="v">40% / 60%</div></div>
+          </div>
+
+          <h4>Les contrats GNL : une négociation géopolitique</h4>
+          <p>Les grands contrats de gaz naturel liquéfié (GNL) entre producteurs (Qatar, USA, Australie) et acheteurs européens ou asiatiques sont des négociations d'État mixées à des négociations d'entreprise. Ils impliquent :</p>
+          <ul class="styled">
+            <li><strong>La clause de destination</strong> — Historiquement, le GNL contractuel ne pouvait être redirigé. Sa suppression progressive dans les nouveaux contrats est le fruit de longues négociations (UE vs Qatar : 2021–2023).</li>
+            <li><strong>L'indexation prix</strong> — Lier le prix au pétrole (Brent) ou au hub gazier (TTF, Henry Hub) est un enjeu majeur qui détermine qui porte le risque prix sur 20 ans.</li>
+            <li><strong>Take-or-pay</strong> — L'acheteur s'engage à payer même s'il ne prend pas le volume. Négocier le niveau du ToP (60% à 90% du volume contractuel) est un risque financier majeur.</li>
+          </ul>
+
+          <h4>Power Purchase Agreements (PPAs)</h4>
+          <p>Avec la transition énergétique, les PPAs (contrats d'achat d'électricité renouvelable à long terme) sont devenus une classe de négociation majeure. Un industriel comme Air Liquide ou Google négocie directement avec un développeur solaire/éolien pour 20 ans à un prix fixe.</p>
+
+          <div class="callout insight">
+            <div class="callout-icon">🌱</div>
+            <div class="callout-body"><strong>Enjeu quantitatif :</strong> En 2022, <strong>47 TWh</strong> de PPAs corporates ont été signés en Europe (record historique). La différence entre un PPA bien négocié (€45/MWh) et mal négocié (€65/MWh) représente pour un industriel consommant 500 GWh/an une <strong>économie annuelle de 10M€</strong> sur 20 ans, soit 200M€.</div>
+          </div>
+
+          <h4>Le trading de CO2 (ETS)</h4>
+          <p>Les quotas de CO2 européens (EU ETS) sont négociés comme des titres financiers. Le prix est passé de €8/t en 2018 à €100/t en 2023. Négocier l'achat de quotas en avance (hedging), ou l'arbitrage entre les registres nationaux, constitue une compétence de trading spécialisée dont les enjeux peuvent représenter plusieurs centaines de millions d'euros pour les grands émetteurs industriels.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION XII – DÉFENSE ══ -->
+    <section class="section" id="defense">
+      <div class="section-header">
+        <div class="section-num">12</div>
+        <div class="section-title-wrap">
+          <h2>Industrie de Défense</h2>
+          <p class="desc">Contrats d'État, export militaire et interopérabilité alliée</p>
+        </div>
+      </div>
+
+      <div class="sector">
+        <div class="sector-head">
+          <div class="sector-icon">🛡️</div>
+          <div>
+            <h3>Marchés de défense</h3>
+            <div class="sub">DGA, OTAN, Export militaire, Offsets</div>
+          </div>
+        </div>
+        <div class="sector-body">
+          <p>La défense est peut-être le secteur de négociation le plus singulier : <strong>client unique (État), enjeux souverains, processus réglementés (code des marchés publics, ITAR, AECA), durée très longue (10–30 ans)</strong>, et dimension géopolitique omniprésente. La vente d'armements confond intérêts commerciaux et diplomatie d'État.</p>
+
+          <div class="kpi-row">
+            <div class="kpi"><div class="k">Budget défense France 2024</div><div class="v">47,2 Mrd€</div></div>
+            <div class="kpi"><div class="k">Exportations armement France</div><div class="v">27 Mrd€ (2023)</div></div>
+            <div class="kpi"><div class="k">Durée programme Rafale (design-service)</div><div class="v">40 ans</div></div>
+            <div class="kpi"><div class="k">Nb pays clients Rafale</div><div class="v">5 États</div></div>
+          </div>
+
+          <h4>La négociation des grands programmes étatiques</h4>
+          <p>En France, la Direction Générale de l'Armement (DGA) est le principal négociateur côté État. Les contrats dits "à prix maxi" ou "coûts + fee" impliquent une ouverture des livres et une négociation sur la structure de coût industriel. Les points clés :</p>
+          <ul class="styled">
+            <li><strong>Spécifications techniques vs. coût</strong> — Le premier levier est toujours la "dérive des spécifications". Chaque montée en gamme technique a un coût exponentiel. La négociation porte sur la hiérarchisation des capacités opérationnelles.</li>
+            <li><strong>Jalons de livraison et pénalités</strong> — Dans l'industrie de défense, les retards sont systémiques (Airbus A400M, FREMM). Négocier des pénalités réalistes et des clauses de force majeure est décisif.</li>
+            <li><strong>Maintien en condition opérationnelle (MCO)</strong> — Le contrat de soutien (pièces détachées, maintenance, formation) représente souvent <strong>3 à 5 fois le prix d'acquisition initial</strong> sur la durée de vie. C'est là que se joue la véritable valeur du contrat.</li>
+          </ul>
+
+          <h4>Les offsets (compensations industrielles)</h4>
+          <p>Dans les contrats export militaires, les États acheteurs exigent des compensations industrielles (offsets) : transferts de technologie, coproductions locales, emplois créés. La négociation des offsets est une dimension politique à part entière. Pour le Rafale en Inde (MMRCA), les offset requirements représentaient <strong>50% de la valeur du contrat</strong> en investissements industriels en Inde.</p>
+
+          <h4>Le rôle de la diplomatie d'État ("defense diplomacy")</h4>
+          <p>Dans l'export défense, la vente est toujours accompagnée d'une dimension interétatique. Le Président de la République française est le premier vendeur d'armements du pays, rôle structuré par le Secrétariat général de la Défense et de la Sécurité nationale (SGDSN). Cette imbrication du commercial et du politique illustre le modèle de Putnam (two-level game) dans sa forme la plus pure.</p>
+
+          <div class="quote-block">
+            <blockquote>The sale of weapons is never purely commercial. It is the translation of strategic relationships into industrial reality.</blockquote>
+            <cite>Jean-Yves Haine — Institut d'Études de Sécurité de l'UE</cite>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION XIII – SYNTHÈSE QUANTITATIVE ══ -->
+    <section class="section" id="synthese">
+      <div class="section-header">
+        <div class="section-num">13</div>
+        <div class="section-title-wrap">
+          <h2>Tableau de Bord Quantitatif</h2>
+          <p class="desc">Les chiffres qui font la différence entre théorie et performance</p>
+        </div>
+      </div>
+
+      <h3>13.1 — Benchmarks de performance par secteur</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Secteur</th><th>KPI principal</th><th>Baseline sans méthode</th><th>Avec méthode structurée</th><th>Delta</th></tr></thead>
+          <tbody>
+            <tr><td>Banque / Crédit</td><td>Taux moyen obtenu (renégociation)</td><td>–10 bps</td><td>–35 bps</td><td><strong>+25 bps</strong></td></tr>
+            <tr><td>IBD / M&A</td><td>Multiple d'acquisition (acheteur)</td><td>12,5x EBITDA</td><td>10,8x EBITDA</td><td><strong>–14%</strong></td></tr>
+            <tr><td>Finance de marché</td><td>Spread client sur produit structuré</td><td>80 bps</td><td>120 bps</td><td><strong>+50%</strong></td></tr>
+            <tr><td>Conseil</td><td>Win rate appels d'offres</td><td>22%</td><td>38%</td><td><strong>+73%</strong></td></tr>
+            <tr><td>Achats industriels</td><td>Réduction coût total d'achat (année)</td><td>–2%</td><td>–6 à –8%</td><td><strong>3–4x</strong></td></tr>
+            <tr><td>Énergie / PPA</td><td>Prix fixé vs marché au signing</td><td>+8% vs prix spot</td><td>–5% vs spot</td><td><strong>–13 pts</strong></td></tr>
+            <tr><td>Défense / MCO</td><td>Coût MCO sur durée de vie</td><td>4,5x valeur initiale</td><td>3,2x valeur initiale</td><td><strong>–29%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>13.2 — Efficacité des techniques comparées</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Technique</th><th>Gain valeur moyen</th><th>Taux d'adoption Fortune 500</th><th>Délai de maîtrise</th></tr></thead>
+          <tbody>
+            <tr><td>Harvard IBN / BATNA</td><td>+12–18%</td><td>89%</td><td>6–12 mois</td></tr>
+            <tr><td>SPIN Selling</td><td>+27% closing</td><td>76%</td><td>6–12 mois</td></tr>
+            <tr><td>Challenger Sale / Insight</td><td>+23% deal size</td><td>64%</td><td>12–18 mois</td></tr>
+            <tr><td>Cialdini — 7 Principes</td><td>+15–20%</td><td>71%</td><td>3–6 mois</td></tr>
+            <tr><td>Voss — Tactiques FBI</td><td>+8–15% (impasses)</td><td>42%</td><td>6 mois</td></tr>
+            <tr><td>Ancrage initial extrême</td><td>+40–60% (distributif)</td><td>Ubiquitaire</td><td>1–3 mois</td></tr>
+            <tr><td>Kraljic (Achats)</td><td>Réduction 3–4% coût total</td><td>88% (CAC40)</td><td>3–6 mois + data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>13.3 — Variables cognitives mesurées</h3>
+      <div class="stat-row">
+        <div class="stat-block"><span class="big">40–60%</span><div class="lbl">Variance résultat expliquée par la première offre (ancrage)</div></div>
+        <div class="stat-block"><span class="big">+42%</span><div class="lbl">Acquiescement après don symbolique (Regan, 1971)</div></div>
+        <div class="stat-block"><span class="big">3x</span><div class="lbl">Aversion à la perte vs gain équivalent (Kahneman)</div></div>
+        <div class="stat-block"><span class="big">73%</span><div class="lbl">Deals cross-border impactés par différences culturelles</div></div>
+        <div class="stat-block"><span class="big">7:1</span><div class="lbl">ROI moyen formation négociation (ATD, 18 mois)</div></div>
+        <div class="stat-block"><span class="big">15 sec</span><div class="lbl">Durée du silence inconfortable — la résistance s'effondre</div></div>
+      </div>
+
+    </section>
+
+    <!-- ══ SECTION XIV – BIBLIO ══ -->
+    <section class="section" id="biblio">
+      <div class="section-header">
+        <div class="section-num">14</div>
+        <div class="section-title-wrap">
+          <h2>Bibliographie &amp; Références</h2>
+          <p class="desc">Les œuvres fondatrices et les sources contemporaines</p>
+        </div>
+      </div>
+
+      <h4>Ouvrages fondateurs — Négociation</h4>
+      <ul class="styled">
+        <li><strong>Fisher, Ury, Patton</strong> — <em>Getting to Yes</em> (1981, Penguin Books). La bible. Incontournable.</li>
+        <li><strong>Ury, William</strong> — <em>Getting Past No</em> (1991). Négociation avec des interlocuteurs difficiles.</li>
+        <li><strong>Raiffa, Howard</strong> — <em>The Art and Science of Negotiation</em> (1982, Harvard University Press). Le cadre analytique le plus complet.</li>
+        <li><strong>Schelling, Thomas</strong> — <em>The Strategy of Conflict</em> (1960, Harvard University Press). La théorie du signal et de la crédibilité.</li>
+        <li><strong>Voss, Chris &amp; Raz, Tahl</strong> — <em>Never Split the Difference</em> (2016, Harper Business). L'approche FBI transposée en entreprise.</li>
+        <li><strong>Malhotra, Deepak &amp; Bazerman, Max</strong> — <em>Negotiation Genius</em> (2007, Harvard Business Review Press). Synthèse académique et pratique.</li>
+      </ul>
+
+      <h4>Ouvrages — Vente &amp; Influence</h4>
+      <ul class="styled">
+        <li><strong>Rackham, Neil</strong> — <em>SPIN Selling</em> (1988, McGraw-Hill). La vente consultative fondée sur l'empirisme.</li>
+        <li><strong>Dixon, Matthew &amp; Adamson, Brent</strong> — <em>The Challenger Sale</em> (2011, Portfolio/Penguin). La révolution de l'insight selling.</li>
+        <li><strong>Cialdini, Robert</strong> — <em>Influence: The Psychology of Persuasion</em> (1984) et <em>Pre-Suasion</em> (2016, Simon &amp; Schuster).</li>
+        <li><strong>Miller, Robert &amp; Heiman, Stephen</strong> — <em>Strategic Selling</em> (1985). La cartographie des décideurs complexes.</li>
+      </ul>
+
+      <h4>Ouvrages — Géopolitique &amp; Sciences Politiques</h4>
+      <ul class="styled">
+        <li><strong>Kissinger, Henry</strong> — <em>A World Restored</em> (1957) et <em>Diplomacy</em> (1994). La négociation dans l'histoire.</li>
+        <li><strong>Nye, Joseph</strong> — <em>Soft Power</em> (2004, PublicAffairs). Pouvoir d'attraction vs coercition.</li>
+        <li><strong>Putnam, Robert</strong> — <em>Diplomacy and Domestic Politics: The Logic of Two-Level Games</em> (1988, International Organization). Les contraintes internes dans la négociation externe.</li>
+        <li><strong>Brzezinski, Zbigniew</strong> — <em>The Grand Chessboard</em> (1997, Basic Books). Géopolitique et négociation de puissance.</li>
+      </ul>
+
+      <h4>Économie comportementale</h4>
+      <ul class="styled">
+        <li><strong>Kahneman, Daniel</strong> — <em>Thinking, Fast and Slow</em> (2011, Farrar, Straus and Giroux). Les deux systèmes cognitifs et leurs implications pour la négociation.</li>
+        <li><strong>Thaler, Richard &amp; Sunstein, Cass</strong> — <em>Nudge</em> (2008, Yale University Press). Architecture de choix et négociation.</li>
+        <li><strong>Ariely, Dan</strong> — <em>Predictably Irrational</em> (2008). Les biais systématiques exploitables.</li>
+      </ul>
+
+      <h4>Articles académiques clés</h4>
+      <ul class="styled">
+        <li>Nash, John — <em>The Bargaining Problem</em> (Econometrica, 1950).</li>
+        <li>Galinsky &amp; Mussweiler — <em>First Offers as Anchors</em> (JPSP, 2001).</li>
+        <li>Putnam, Robert — <em>Diplomacy and Domestic Politics</em> (IO, 1988).</li>
+        <li>Kraljic, Peter — <em>Purchasing Must Become Supply Management</em> (HBR, 1983).</li>
+      </ul>
+
+    </section>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-text">Cours Master Négociation &amp; Sales — Contenu à vocation académique et professionnelle</div>
+    <div class="footer-text" style="color: var(--text-muted);">Sources : Harvard PON, McKinsey, ATD, Source Global Research, KPMG, Huthwaite International</div>
+  </footer>
+
+</div>
+
+<script>
+  // Active nav item on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => {
+          item.classList.remove('active');
+          if (item.getAttribute('href') === '#' + entry.target.id) {
+            item.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-10% 0px -70% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
